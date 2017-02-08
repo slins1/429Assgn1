@@ -42,6 +42,7 @@ public class BookCollection  extends EntityBase implements IView
 	//------------------------------------------------------------------------------------
 	public Book findBooksNewerThanDate(String year)
 	{
+
 		return null;
 	}
 
@@ -49,6 +50,8 @@ public class BookCollection  extends EntityBase implements IView
 	//------------------------------------------------------------------------------------
 	public Book findBooksWithTitleLike(String title)
 	{
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE title LIKE %"
+				+ title + "%";
 		return null;
 	}
 
