@@ -3,6 +3,7 @@ package model;
 
 // system imports
 import java.util.Properties;
+import java.util.StringJoiner;
 import java.util.Vector;
 import javafx.scene.Scene;
 
@@ -28,37 +29,47 @@ public class BookCollection  extends EntityBase implements IView
 
 	// constructor for this class
 	//----------------------------------------------------------
-	public BookCollection(String tablename) {
-		super(tablename);
+	public BookCollection() {
+		super(myTableName);
 		books = new Vector<Book>();
 	}
 
 	//----------------------------------------------------------------------------------
-	public Book findBooksOlderThanDate(String year)
+	public void findBooksOlderThanDate(String year)
 	{
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE pubYear < "
+				+ year;
+		books = getSelectQueryResult(sqlSelectStatement);
 	}
 	
 	//------------------------------------------------------------------------------------
-	public Book findBooksNewerThanDate(String year)
+	public void findBooksNewerThanDate(String year)
 	{
-
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE pubYear > "
+				+ year;
+		books = getSelectQueryResult(sqlSelectStatement);
 	}
 
 
 	//------------------------------------------------------------------------------------
-	public Book findBooksWithTitleLike(String title)
+	public void findBooksWithTitleLike(String title)
 	{
-		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE title LIKE %"
-				+ title + "%";
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE title LIKE '%"
+				+ title + "%'";
+		books = getSelectQueryResult(sqlSelectStatement);
 	}
 
 	//------------------------------------------------------------------------------------
-	public Book findBooksWithAuthorLike(String author)
+	public void findBooksWithAuthorLike(String author)
 	{
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + "WHERE author LIKE '%"
+				+ author + "%'";
+		books = getSelectQueryResult(sqlSelectStatement);
+	}
+
+	public Vector<Book> getBooks()
+	{
+		return books;
 	}
 
 	//----------------------------------------------------------------------------------

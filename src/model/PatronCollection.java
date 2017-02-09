@@ -23,85 +23,53 @@ public class PatronCollection  extends EntityBase implements IView
 {
 	private static final String myTableName = "Patron";
 
-	private Vector<Patron> accounts;
+	private Vector<Patron> patrons;
 	// GUI Components
 
 	// constructor for this class
 	//----------------------------------------------------------
-	public PatronCollection( Patron cust) throws
-		Exception
+	public PatronCollection()
 	{
 		super(myTableName);
-
-		if (cust == null)
-		{
-			new Event(Event.getLeafLevelClassName(this), "<init>",
-				"Missing account holder information", Event.FATAL);
-			throw new Exception
-				("UNEXPECTED ERROR: AccountCollection.<init>: account holder information is null");
-		}
-
-		String patronId = (String)cust.getState("ID");
-
-		if (patronId == null)
-		{
-			new Event(Event.getLeafLevelClassName(this), "<init>",
-				"Data corrupted: Account Holder has no id in database", Event.FATAL);
-			throw new Exception
-			 ("UNEXPECTED ERROR: AccountCollection.<init>: Data corrupted: account holder has no id in repository");
-		}
-
-		String query = "SELECT * FROM " + myTableName + " WHERE (OwnerID = " + patronId + ")";
-
-		Vector allDataRetrieved = getSelectQueryResult(query);
-
-		if (allDataRetrieved != null)
-		{
-			accounts = new Vector<Patron>();
-
-			for (int cnt = 0; cnt < allDataRetrieved.size(); cnt++)
-			{
-				Properties nextPatronData = (Properties)allDataRetrieved.elementAt(cnt);
-
-				Patron account = new Patron(nextPatronData);
-
-				if (account != null)
-				{
-					addPatron(account);
-				}
-			}
-
-		}
-		else
-		{
-			throw new InvalidPrimaryKeyException("No accounts for customer : "
-				+ patronId + ". Name : " + cust.getState("Name"));
-		}
-
+		patrons = new Vector<Patron>();
 	}
 	
 	//----------------------------------------------------------------------------------
-	public Patron findPatronOlderThan(String date)
+	public void findPatronOlderThan(String date)
 	{
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE dateOfBirth < "
+				+ date;
+		patrons = getSelectQueryResult(sqlSelectStatement);
 	}
 	
 	//------------------------------------------------------------------------------------
-	public Patron findPatronYoungerThan(String date)
+	public void findPatronYoungerThan(String date)
 	{
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE dateOfBirth > "
+				+ date;
+		patrons = getSelectQueryResult(sqlSelectStatement);
 	}
 	
 	//------------------------------------------------------------------------------------
-	public Patron findPatronAtZip(String zip)
+	public void findPatronAtZip(String zip)
 	{
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE zip = '"
+				+ zip + "'";
+		patrons = getSelectQueryResult(sqlSelectStatement);
 	}
 	
 	//------------------------------------------------------------------------------------
-	public Patron findPatronWithNameLike(String name)
+	public void findPatronWithNameLike(String name)
 	{
-		return null;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE name LIKE %'"
+				+ name + "'%";
+		patrons = getSelectQueryResult(sqlSelectStatement);
+	}
+
+	//------------------------------------------------------------------------------------
+	public Vector<Patron> getPatrons()
+	{
+		return patrons;
 	}
 
 	//----------------------------------------------------------------------------------
@@ -109,7 +77,7 @@ public class PatronCollection  extends EntityBase implements IView
 	{
 		//accounts.add(a);
 		int index = findIndexToAdd(a);
-		accounts.insertElementAt(a,index); // To build up a collection sorted on some key
+		patrons.insertElementAt(a,index); // To build up a collection sorted on some key
 	}
 
 	//----------------------------------------------------------------------------------
@@ -117,14 +85,14 @@ public class PatronCollection  extends EntityBase implements IView
 	{
 		//users.add(u);
 		int low=0;
-		int high = accounts.size()-1;
+		int high = patrons.size()-1;
 		int middle;
 
 		while (low <=high)
 		{
 			middle = (low+high)/2;
 
-			Patron midSession = accounts.elementAt(middle);
+			Patron midSession = patrons.elementAt(middle);
 
 			int result = Patron.compare(a,midSession);
 
@@ -152,7 +120,7 @@ public class PatronCollection  extends EntityBase implements IView
 	public Object getState(String key)
 	{
 		if (key.equals("stuff"))
-			return accounts;
+			return patrons;
 		else
 		return null;
 	}
@@ -168,9 +136,9 @@ public class PatronCollection  extends EntityBase implements IView
 	public Patron retrieve(String accountNumber)
 	{
 		Patron retValue = null;
-		for (int cnt = 0; cnt < accounts.size(); cnt++)
+		for (int cnt = 0; cnt < patrons.size(); cnt++)
 		{
-			Patron nextPatr = accounts.elementAt(cnt);
+			Patron nextPatr = patrons.elementAt(cnt);
 			String nextPatNum = (String)nextPatr.getState("patronId");
 			if (nextPatNum.equals(accountNumber) == true)
 			{
