@@ -65,19 +65,27 @@ public class TestAssgn1 {
 
 //      BookCollection tests--------------------------------------------
         BookCollection bookCollection = new BookCollection();
-        bookCollection.findBooksWithTitleLike("mon");
+        System.out.println("Search for books by fragment of title: ");
+        String titleFrag = scanner.nextLine();
+        bookCollection.findBooksWithTitleLike(titleFrag);
         System.out.println(bookCollection.getBooks().toString());
         System.out.println("");
-        bookCollection.findBooksNewerThanDate("1800");
+        System.out.println("Search for books published before a given publication year: ");
+        String pubYearSearch = scanner.nextLine();
+        bookCollection.findBooksOlderThanDate(pubYearSearch);
         System.out.println(bookCollection.getBooks().toString());
         System.out.println("");
 
 //      PatronCollection tests------------------------------------------
         PatronCollection patronCollection = new PatronCollection();
-        patronCollection.findPatronYoungerThan("1990-01-01");
+        System.out.println("Search for patrons younger than a given date: ");
+        String patronBdaySearch = scanner.nextLine();
+        patronCollection.findPatronYoungerThan(patronBdaySearch);
         System.out.println(patronCollection.getPatrons().toString());
         System.out.println("");
-        patronCollection.findPatronAtZip("14432");
+        System.out.println("Search for patrons by zip code: ");
+        String zipSearch = scanner.nextLine();
+        patronCollection.findPatronAtZip(zipSearch);
         System.out.println(patronCollection.getPatrons().toString());
     }
 }

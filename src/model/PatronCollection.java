@@ -37,16 +37,16 @@ public class PatronCollection  extends EntityBase implements IView
 	//----------------------------------------------------------------------------------
 	public void findPatronOlderThan(String date)
 	{
-		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE dateOfBirth < "
-				+ date;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE dateOfBirth < '"
+				+ date + "'";
 		patrons = getSelectQueryResult(sqlSelectStatement);
 	}
 	
 	//------------------------------------------------------------------------------------
 	public void findPatronYoungerThan(String date)
 	{
-		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE dateOfBirth > "
-				+ date;
+		String sqlSelectStatement = "SELECT * FROM " + myTableName + " WHERE dateOfBirth > '"
+				+ date + "'";
 		patrons = getSelectQueryResult(sqlSelectStatement);
 	}
 	
