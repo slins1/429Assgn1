@@ -7,7 +7,9 @@ public class ViewFactory {
 
 	public static View createView(String viewName, IModel model)
 	{
-			return null;
+		if (viewName == "LibrarianView")
+			return new LibrarianView(model);
+		return null;
 	}
 
 
